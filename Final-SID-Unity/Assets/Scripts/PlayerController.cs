@@ -4,15 +4,33 @@ using Photon.Pun;
 public class PlayerController : MonoBehaviourPun
 {
     private int ownerID; // ID del jugador local asignado por Photon PUN
+    private Rigidbody2D rb;
 
     private void Awake()
     {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
         ownerID = photonView.Owner.ActorNumber; // Obtener el ID del jugador local
+        bool canControlBall = ownerID == PhotonNetwork.LocalPlayer.ActorNumber;
+
+        if (canControlBall)
+        {
+            // Permitir controlar la bola solo al jugador local
+            rb.isKinematic = false;
+        }
+        else
+        {
+            // Desactivar el control de la bola para otros jugadores
+            rb.isKinematic = true;
+        }
     }
 
     private void Update()
     {
-        if (photonView.IsMine)
+        if (photonView.IsMine && ownerID == PhotonNetwork.LocalPlayer.ActorNumber)
         {
             // Obtener la posición del mouse en la pantalla
             Vector3 mousePosition = Input.mousePosition;
