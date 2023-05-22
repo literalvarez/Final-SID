@@ -41,6 +41,18 @@ public class MatchmakingManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = MaxPlayersPerRoom });
     }
 
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Debug.Log("Nuevo jugador unido a la sala.");
+        Debug.Log("Jugadores en la sala: " + PhotonNetwork.CurrentRoom.PlayerCount);
+        if (PhotonNetwork.CurrentRoom.PlayerCount == MaxPlayersPerRoom)
+        {
+            Debug.Log("Habitación completa. Iniciar partida...");
+            PhotonNetwork.LoadLevel(GameSceneName); // Cargar la escena de juego
+        }
+    }
+
+
     public override void OnJoinedRoom()
     {
         Debug.Log("Se ha unido a una habitación.");
