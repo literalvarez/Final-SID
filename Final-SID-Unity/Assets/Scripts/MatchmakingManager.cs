@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.Events;
 
 public class MatchmakingManager : MonoBehaviourPunCallbacks
 {
@@ -10,6 +11,8 @@ public class MatchmakingManager : MonoBehaviourPunCallbacks
 
     public Button matchmakingButton; // Referencia al botón de matchmaking en la interfaz
 
+    public UnityEvent DoStartMatchmaking;
+    public UnityEvent DoConnectedToMaster;
     private void Start()
     {
         // Deshabilitar el botón hasta que el cliente esté conectado y listo
@@ -21,11 +24,13 @@ public class MatchmakingManager : MonoBehaviourPunCallbacks
 
     public void StartMatchmaking()
     {
+        DoStartMatchmaking.Invoke();
         PhotonNetwork.JoinRandomRoom(); // Intenta unirse a una habitación aleatoria
     }
 
     public override void OnConnectedToMaster()
     {
+        DoConnectedToMaster.Invoke();
         Debug.Log("Conexión establecida con el servidor maestro.");
         matchmakingButton.interactable = true; // Habilitar el botón de matchmaking
     }
