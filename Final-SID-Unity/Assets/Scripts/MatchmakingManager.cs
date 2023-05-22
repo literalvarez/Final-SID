@@ -6,7 +6,7 @@ using Photon.Realtime;
 public class MatchmakingManager : MonoBehaviourPunCallbacks
 {
     private const int MaxPlayersPerRoom = 2; // Número máximo de jugadores por habitación
-    private const string GameSceneName = "Game"; // Reemplaza con el nombre de tu escena de juego
+    private const string GameSceneName = "Juego"; // Reemplaza con el nombre de tu escena de juego
 
     public Button matchmakingButton; // Referencia al botón de matchmaking en la interfaz
 
