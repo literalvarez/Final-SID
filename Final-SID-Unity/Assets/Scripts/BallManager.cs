@@ -6,20 +6,22 @@ public class BallManager : MonoBehaviourPun
     public GameObject ballPrefab1;
     public GameObject ballPrefab2;
 
+    public Transform spawnPosition1;
+    public Transform spawnPosition2;
+
     private GameObject playerBall;
 
     private void Start()
     {
-
         if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
         {
-            // Jugador 1 instanciará la bola 1
-            playerBall = PhotonNetwork.Instantiate(ballPrefab1.name, Vector3.zero, Quaternion.identity);
+            // Jugador 1 instanciará la bola 1 en la posición especificada
+            playerBall = PhotonNetwork.Instantiate(ballPrefab1.name, spawnPosition1.position, Quaternion.identity);
         }
         else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
         {
-            // Jugador 2 instanciará la bola 2
-            playerBall = PhotonNetwork.Instantiate(ballPrefab2.name, Vector3.zero, Quaternion.identity);
+            // Jugador 2 instanciará la bola 2 en la posición especificada
+            playerBall = PhotonNetwork.Instantiate(ballPrefab2.name, spawnPosition2.position, Quaternion.identity);
         }
 
         // Hacer que la bola sea visible para ambos jugadores
@@ -37,4 +39,3 @@ public class BallManager : MonoBehaviourPun
         ballRenderer.enabled = true;
     }
 }
-
