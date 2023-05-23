@@ -10,6 +10,7 @@ public class BallManager : MonoBehaviourPun
 
     private void Start()
     {
+
         if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
         {
             // Jugador 1 instanciará la bola 1
@@ -23,6 +24,9 @@ public class BallManager : MonoBehaviourPun
 
         // Hacer que la bola sea visible para ambos jugadores
         photonView.RPC("SetBallVisibility", RpcTarget.AllBuffered);
+        // Ajustar la frecuencia de sincronización
+        PhotonNetwork.SendRate = 30; // Ajusta este valor según tus necesidades
+        PhotonNetwork.SerializationRate = 30; // Ajusta este valor según tus necesidades
     }
 
     [PunRPC]
