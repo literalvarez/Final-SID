@@ -5,6 +5,8 @@ public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
 {
     private Vector3 networkPosition;
     private Quaternion networkRotation;
+    private Vector2 networkVelocity;
+    private float networkAngularVelocity;
     private Rigidbody2D rb;
 
     private void Awake()
@@ -19,31 +21,36 @@ public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
             // Obtener la posición y rotación local
             Vector3 localPosition = transform.position;
             Quaternion localRotation = transform.rotation;
+            Vector2 localVelocity = rb.velocity;
+            float localAngularVelocity = rb.angularVelocity;
 
-            // Actualizar la posición y rotación de la bola
-            PhotonView photonView = GetComponent<PhotonView>();
-            photonView.RPC("UpdateBallTransform", RpcTarget.OthersBuffered, localPosition, localRotation);
+            // Actualizar la posición, rotación y velocidades de la bola
+            photonView.RPC("UpdateBallTransform", RpcTarget.OthersBuffered, localPosition, localRotation, localVelocity, localAngularVelocity);
         }
         else
         {
-            // Interpolar la posición y rotación de la bola hacia la posición y rotación de la red
+            // Interpolar la posición, rotación y velocidades de la bola hacia los valores de la red
             transform.position = Vector3.Lerp(transform.position, networkPosition, 0.1f);
             transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, 0.1f);
+            rb.velocity = Vector2.Lerp(rb.velocity, networkVelocity, 0.1f);
+            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, networkAngularVelocity, 0.1f);
         }
     }
 
     [PunRPC]
-    private void UpdateBallTransform(Vector3 newPosition, Quaternion newRotation)
+    private void UpdateBallTransform(Vector3 newPosition, Quaternion newRotation, Vector2 newVelocity, float newAngularVelocity)
     {
         networkPosition = newPosition;
         networkRotation = newRotation;
+        networkVelocity = newVelocity;
+        networkAngularVelocity = newAngularVelocity;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            // Enviar la posición y rotación actual de la bola al otro jugador
+            // Enviar la posición, rotación y velocidades actuales de la bola al otro jugador
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(rb.velocity);
@@ -51,11 +58,11 @@ public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
         }
         else
         {
-            // Recibir la posición y rotación de la bola del otro jugador
+            // Recibir la posición, rotación y velocidades de la bola del otro jugador
             networkPosition = (Vector3)stream.ReceiveNext();
             networkRotation = (Quaternion)stream.ReceiveNext();
-            rb.velocity = (Vector2)stream.ReceiveNext();
-            rb.angularVelocity = (float)stream.ReceiveNext();
+            networkVelocity = (Vector2)stream.ReceiveNext();
+            networkAngularVelocity = (float)stream.ReceiveNext();
         }
     }
 }
