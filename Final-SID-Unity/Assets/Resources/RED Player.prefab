@@ -366,3 +366,4 @@ MonoBehaviour:
   maxX: -0.79
   minY: -4.09
   maxY: 4.09
+  initialPositionPlayer1: {x: 0, y: 0, z: 0}
