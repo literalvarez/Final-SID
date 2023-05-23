@@ -21,5 +21,16 @@ public class VelocityLimiter : MonoBehaviour
             rb.velocity = rb.velocity.normalized * maxVelocity;
         }
     }
-}
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Calculate the combined velocity of both objects involved in the collision
+        Vector2 combinedVelocity = rb.velocity + collision.relativeVelocity;
+
+        // Limit the combined velocity if it exceeds the maximum
+        if (combinedVelocity.magnitude > maxVelocity)
+        {
+            rb.velocity = combinedVelocity.normalized * maxVelocity;
+        }
+    }
+}
