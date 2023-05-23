@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class HockeyDisk : MonoBehaviourPun, IPunObservable
 {
+    [SerializeField]
+    private float collisionForceMagnitude = 10f;
+
     private Rigidbody2D rigidbody2D;
     private Vector3 networkPosition;
     private Quaternion networkRotation;
@@ -61,9 +64,9 @@ public class HockeyDisk : MonoBehaviourPun, IPunObservable
             if (otherPhotonView != null && otherPhotonView.IsMine)
             {
                 // Handle collision logic on the online player's client
-                // Apply force, change direction, or perform any other desired action
-                // For example, you can add an opposite force to the hockey disk:
-                rigidbody2D.AddForce(-collision.relativeVelocity * 10f, ForceMode2D.Impulse);
+                // Apply force to the hockey disk in the direction of collision relative to the player
+                Vector2 forceDirection = (transform.position - collision.transform.position).normalized;
+                rigidbody2D.AddForce(forceDirection * collisionForceMagnitude, ForceMode2D.Impulse);
             }
         }
 
