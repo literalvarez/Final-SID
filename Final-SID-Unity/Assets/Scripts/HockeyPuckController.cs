@@ -30,7 +30,7 @@ public class HockeyPuckController : MonoBehaviourPun, IPunObservable
             Vector2 impactDirection = collision.relativeVelocity.normalized;
 
             // Aplicar una fuerza de empuje a la bola 3 en la dirección del choque
-            float pushForce = 10f; // Ajusta la fuerza de empuje según tus necesidades
+            float pushForce = 4f; // Ajusta la fuerza de empuje según tus necesidades
             rb.AddForce(impactDirection * pushForce, ForceMode2D.Impulse);
 
             // Sincronizar el movimiento de la bola 3 con los demás jugadores
