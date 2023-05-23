@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: -3715124632253981126}
   m_Layer: 0
   m_Name: YELLOW Player
-  m_TagString: Player
+  m_TagString: Ball2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -213,7 +213,6 @@ MonoBehaviour:
   minY: -4.09
   maxY: 4.09
   initialPositionPlayer2: {x: 6, y: 0, z: 0}
-  pushForce: 5
 --- !u!1 &9081604354836360917
 GameObject:
   m_ObjectHideFlags: 0

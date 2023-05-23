@@ -1800,12 +1800,10 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
+  Synchronization: 1
+  OwnershipTransfer: 1
+  observableSearch: 0
   ObservedComponents:
-  - {fileID: 9015191034375328500}
-  - {fileID: 9015191034375328501}
   - {fileID: 9015191034375328502}
   sceneViewId: 3
   InstantiationId: 0
@@ -2525,7 +2523,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1780773425}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1163910132e713b4aaebf15f17f431a7, type: 3}
   m_Name: 
