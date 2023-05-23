@@ -6,36 +6,32 @@ public class BallController : MonoBehaviourPun, IPunObservable
     private Vector3 networkPosition;
     private Quaternion networkRotation;
     private Rigidbody2D rb;
-    private SpriteRenderer spriteRenderer;
+    private bool isLocalPlayer;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        //spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start()
     {
-        // Activar el renderizador de la bola para todos los jugadores
-        spriteRenderer.enabled = true;
+        isLocalPlayer = photonView.IsMine;
 
-        if (photonView.IsMine)
+        if (isLocalPlayer)
         {
-            // Habilitar la física en la bola del jugador local
-            rb.isKinematic = false;
+            // Activar el control para el jugador local
+            rb.bodyType = RigidbodyType2D.Dynamic;
         }
         else
         {
-            // Desactivar el control y la física en la bola para los otros jugadores
-            rb.isKinematic = true;
-            rb.velocity = Vector2.zero;
+            // Desactivar el control para los otros jugadores
+            rb.bodyType = RigidbodyType2D.Static;
         }
     }
 
     private void Update()
     {
-        if (photonView.IsMine)
+        if (isLocalPlayer)
         {
             // Mover la bola según la posición del mouse del jugador local
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -65,4 +61,5 @@ public class BallController : MonoBehaviourPun, IPunObservable
         }
     }
 }
+
 
