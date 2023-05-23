@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 9081604354017388197}
   - component: {fileID: 9081604354017388198}
   - component: {fileID: 6705617054291537206}
+  - component: {fileID: -3715124632253981126}
   m_Layer: 0
   m_Name: YELLOW Player
   m_TagString: Untagged
@@ -192,6 +193,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28c8d2ab15f4e0a418af4e3d3185f8e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3715124632253981126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9081604354017388201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7be9b1443e7444db58bb99cefef9a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &9081604354836360917
