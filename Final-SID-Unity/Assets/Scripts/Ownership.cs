@@ -17,6 +17,8 @@ public class Ownership : MonoBehaviour
             // Obtener los jugadores en la habitación
             Player[] players = PhotonNetwork.PlayerList;
 
+
+
             // Asignar el control de las bolas a los jugadores correspondientes
             if (players[0].IsLocal)
             {
