@@ -2034,6 +2034,10 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: -12.429215
       objectReference: {fileID: 0}
+    - target: {fileID: 5113909043043038043, guid: 762ff01246ceefa459582a1be5797751, type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 5113909043103960819, guid: 762ff01246ceefa459582a1be5797751, type: 3}
       propertyPath: m_SortingOrder
       value: 1
