@@ -4,14 +4,13 @@ using Photon.Pun;
 public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
 {
     public float maxVelocity = 5f; // Maximum velocity magnitude
+    public float bounciness = 0.8f; // Bounciness factor for collisions
 
     private Vector3 networkPosition;
     private Quaternion networkRotation;
     private Vector2 networkVelocity;
     private float networkAngularVelocity;
     private Rigidbody2D rb;
-
-    private bool isColliding = false;
 
     private void Awake()
     {
@@ -20,31 +19,34 @@ public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
 
     private void FixedUpdate()
     {
-        if (isColliding)
+        // Limit the velocity if it exceeds the maximum
+        if (rb.velocity.magnitude > maxVelocity)
         {
-            rb.velocity = Vector2.zero;
-            isColliding = false;
-        }
-        else
-        {
-            // Limit the velocity if it exceeds the maximum
-            if (rb.velocity.magnitude > maxVelocity)
-            {
-                rb.velocity = rb.velocity.normalized * maxVelocity;
-            }
+            rb.velocity = rb.velocity.normalized * maxVelocity;
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        isColliding = true;
+        // Calculate the reflection direction based on the collision normal
+        Vector2 reflectionDirection = Vector2.Reflect(rb.velocity.normalized, collision.contacts[0].normal).normalized;
+
+        // Calculate the final velocity after the collision
+        float collisionVelocity = rb.velocity.magnitude * bounciness;
+        rb.velocity = reflectionDirection * collisionVelocity;
+
+        // Set the new network velocity
+        networkVelocity = rb.velocity;
+
+        // Update the ball's transform for other players
+        photonView.RPC("UpdateBallTransform", RpcTarget.OthersBuffered, transform.position, transform.rotation, networkVelocity, rb.angularVelocity);
     }
 
     private void Update()
     {
         if (photonView.IsMine)
         {
-            // Obtener la posición y rotación local
+            // Obtain the local position, rotation, and velocity
             Vector3 localPosition = transform.position;
             Quaternion localRotation = transform.rotation;
             Vector2 localVelocity = rb.velocity;
@@ -54,14 +56,15 @@ public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
             if (localVelocity.magnitude > maxVelocity)
             {
                 localVelocity = localVelocity.normalized * maxVelocity;
+                rb.velocity = localVelocity;
             }
 
-            // Actualizar la posición, rotación y velocidades de la bola
+            // Update the ball's transform for other players
             photonView.RPC("UpdateBallTransform", RpcTarget.OthersBuffered, localPosition, localRotation, localVelocity, localAngularVelocity);
         }
         else
         {
-            // Interpolar la posición, rotación y velocidades de la bola hacia los valores de la red
+            // Interpolate the position, rotation, and velocity of the ball towards the network values
             transform.position = Vector3.Lerp(transform.position, networkPosition, 0.1f);
             transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, 0.1f);
             rb.velocity = Vector2.Lerp(rb.velocity, networkVelocity, 0.1f);
@@ -82,7 +85,7 @@ public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (stream.IsWriting)
         {
-            // Enviar la posición, rotación y velocidades actuales de la bola al otro jugador
+            // Send the current position, rotation, and velocities of the ball to other players
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(rb.velocity);
@@ -90,11 +93,6 @@ public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
         }
         else
         {
-            // Recibir la posición, rotación y velocidades de la bola del otro jugador
+            // Receive the position, rotation, and velocities of the ball from other players
             networkPosition = (Vector3)stream.ReceiveNext();
             networkRotation = (Quaternion)stream.ReceiveNext();
-            networkVelocity = (Vector2)stream.ReceiveNext();
-            networkAngularVelocity = (float)stream.ReceiveNext();
-        }
-    }
-}
