@@ -96,3 +96,8 @@ public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
             // Receive the position, rotation, and velocities of the ball from other players
             networkPosition = (Vector3)stream.ReceiveNext();
             networkRotation = (Quaternion)stream.ReceiveNext();
+            networkVelocity = (Vector2)stream.ReceiveNext();
+            networkAngularVelocity = (float)stream.ReceiveNext();
+        }
+    }
+}
