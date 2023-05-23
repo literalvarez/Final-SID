@@ -13,19 +13,16 @@ public class HockeyDisk : MonoBehaviourPun, IPunObservable
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
 
-        //if (!photonView.IsMine)
-        //{
+        rigidbody2D.isKinematic = !photonView.IsMine;
 
-            rigidbody2D.isKinematic = false;
+        if (!photonView.IsMine)
             GetComponent<CircleCollider2D>().enabled = true;
-        //}
     }
 
     private void FixedUpdate()
     {
         if (!photonView.IsMine)
         {
-            // Smoothly interpolate to the network position and rotation
             transform.position = Vector3.Lerp(transform.position, networkPosition, Time.fixedDeltaTime * 5f);
             transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, Time.fixedDeltaTime * 5f);
         }
@@ -35,13 +32,11 @@ public class HockeyDisk : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            // Send the disk's position and rotation to the network
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
         }
         else
         {
-            // Receive the disk's position and rotation from the network
             networkPosition = (Vector3)stream.ReceiveNext();
             networkRotation = (Quaternion)stream.ReceiveNext();
         }
@@ -49,28 +44,21 @@ public class HockeyDisk : MonoBehaviourPun, IPunObservable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!photonView.IsMine) return; // Only handle collisions on the local client
-
-        // Handle collision with walls
         if (collision.gameObject.CompareTag("Wall"))
         {
             // Handle wall collision logic here
         }
 
-        // Handle collision with players
         if (collision.gameObject.CompareTag("Player"))
         {
             PhotonView otherPhotonView = collision.gameObject.GetComponent<PhotonView>();
-            if (otherPhotonView != null && otherPhotonView.IsMine)
+            if (otherPhotonView != null && otherPhotonView != photonView)
             {
-                // Handle collision logic on the online player's client
-                // Apply force to the hockey disk based on the collision's relative velocity
                 Vector2 relativeVelocity = collision.relativeVelocity;
                 rigidbody2D.AddForce(relativeVelocity * collisionForceMultiplier, ForceMode2D.Impulse);
             }
         }
 
-        // Synchronize the collision information across the network
         photonView.RPC("SyncCollision", RpcTarget.Others, collision.gameObject.tag);
     }
 
