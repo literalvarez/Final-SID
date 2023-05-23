@@ -1982,3 +1982,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9015191035011014874, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
   m_PrefabInstance: {fileID: 9015191034375328494}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9015191034375328498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1780773425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15f61c38ae9a9f942924bc1aaffe9d23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minBoundary: {x: -30, y: -30}
+  maxBoundary: {x: 30, y: 30}
