@@ -3,23 +3,25 @@ using Photon.Pun;
 
 public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
 {
-    public float maxVelocity = 5f; // Maximum velocity magnitude
-    public float bounciness = 0.8f; // Bounciness factor for collisions
+    public float maxVelocity = 5f; // Máxima magnitud de la velocidad
+    public float bounciness = 0.8f; // Factor de rebote para las colisiones
 
     private Vector3 networkPosition;
     private Quaternion networkRotation;
     private Vector2 networkVelocity;
     private float networkAngularVelocity;
+    private int networkViewID; // ID de PhotonView
     private Rigidbody2D rb;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        networkViewID = photonView.ViewID; // Asignar el ID de PhotonView
     }
 
     private void FixedUpdate()
     {
-        // Limit the velocity if it exceeds the maximum
+        // Limitar la velocidad si supera el límite máximo
         if (rb.velocity.magnitude > maxVelocity)
         {
             rb.velocity = rb.velocity.normalized * maxVelocity;
@@ -28,43 +30,43 @@ public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Calculate the reflection direction based on the collision normal
+        // Calcular la dirección de reflexión basada en la normal de la colisión
         Vector2 reflectionDirection = Vector2.Reflect(rb.velocity.normalized, collision.contacts[0].normal).normalized;
 
-        // Calculate the final velocity after the collision
+        // Calcular la velocidad final después de la colisión
         float collisionVelocity = rb.velocity.magnitude * bounciness;
         rb.velocity = reflectionDirection * collisionVelocity;
 
-        // Set the new network velocity
+        // Establecer la nueva velocidad de red
         networkVelocity = rb.velocity;
 
-        // Update the ball's transform for other players
-        photonView.RPC("UpdateBallTransform", RpcTarget.OthersBuffered, transform.position, transform.rotation, networkVelocity, rb.angularVelocity);
+        // Actualizar la transformación de la bola para otros jugadores
+        photonView.RPC("UpdateBallTransform", RpcTarget.Others, transform.position, transform.rotation, networkVelocity, rb.angularVelocity);
     }
 
     private void Update()
     {
         if (photonView.IsMine)
         {
-            // Obtain the local position, rotation, and velocity
+            // Obtener la posición, rotación y velocidad local
             Vector3 localPosition = transform.position;
             Quaternion localRotation = transform.rotation;
             Vector2 localVelocity = rb.velocity;
             float localAngularVelocity = rb.angularVelocity;
 
-            // Limit the local velocity if it exceeds the maximum
+            // Limitar la velocidad local si supera el límite máximo
             if (localVelocity.magnitude > maxVelocity)
             {
                 localVelocity = localVelocity.normalized * maxVelocity;
                 rb.velocity = localVelocity;
             }
 
-            // Update the ball's transform for other players
-            photonView.RPC("UpdateBallTransform", RpcTarget.OthersBuffered, localPosition, localRotation, localVelocity, localAngularVelocity);
+            // Actualizar la transformación de la bola para otros jugadores
+            photonView.RPC("UpdateBallTransform", RpcTarget.Others, localPosition, localRotation, localVelocity, localAngularVelocity);
         }
         else
         {
-            // Interpolate the position, rotation, and velocity of the ball towards the network values
+            // Interpolar la posición, rotación y velocidad de la bola hacia los valores de red
             transform.position = Vector3.Lerp(transform.position, networkPosition, 0.1f);
             transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, 0.1f);
             rb.velocity = Vector2.Lerp(rb.velocity, networkVelocity, 0.1f);
@@ -85,7 +87,8 @@ public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (stream.IsWriting)
         {
-            // Send the current position, rotation, and velocities of the ball to other players
+            // Enviar la posición, rotación y velocidades actuales de la bola a otros jugadores
+            stream.SendNext(networkViewID); // Envío del ID de PhotonView
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(rb.velocity);
@@ -93,7 +96,8 @@ public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
         }
         else
         {
-            // Receive the position, rotation, and velocities of the ball from other players
+            // Recibir la posición, rotación y velocidades de la bola de otros jugadores
+            networkViewID = (int)stream.ReceiveNext(); // Recepción del ID de PhotonView
             networkPosition = (Vector3)stream.ReceiveNext();
             networkRotation = (Quaternion)stream.ReceiveNext();
             networkVelocity = (Vector2)stream.ReceiveNext();
