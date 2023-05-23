@@ -1682,7 +1682,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1642843787}
-  - component: {fileID: 1642843786}
   m_Layer: 0
   m_Name: Score Manager
   m_TagString: Untagged
@@ -1690,36 +1689,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1642843786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1642843785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d54a0fcf560c1c40aa09724aafd7c25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onTriggerEnterEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1780773425}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  scoreText: {fileID: 0}
-  objectToMove: {fileID: 0}
-  targetPosition: {fileID: 0}
 --- !u!4 &1642843787
 Transform:
   m_ObjectHideFlags: 0
