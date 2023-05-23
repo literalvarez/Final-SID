@@ -58,4 +58,23 @@ public class HockeyDisk : MonoBehaviourPun, IPunObservable
         if (collision.gameObject.CompareTag("Player"))
         {
             PhotonView otherPhotonView = collision.gameObject.GetComponent<PhotonView>();
-            if
+            if (otherPhotonView != null && otherPhotonView.IsMine)
+            {
+                // Handle collision logic on the online player's client
+                // Apply force, change direction, or perform any other desired action
+                // For example, you can add an opposite force to the hockey disk:
+                rigidbody2D.AddForce(-collision.relativeVelocity * 10f, ForceMode2D.Impulse);
+            }
+        }
+
+        // Synchronize the collision information across the network
+        photonView.RPC("SyncCollision", RpcTarget.Others, collision.gameObject.tag);
+    }
+
+    [PunRPC]
+    private void SyncCollision(string collidedTag)
+    {
+        // Handle collision logic on other clients
+        // You can access the collidedTag to determine the collision type and handle it accordingly
+    }
+}
