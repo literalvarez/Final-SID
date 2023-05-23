@@ -11,9 +11,33 @@ public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
     private float networkAngularVelocity;
     private Rigidbody2D rb;
 
+    private bool isColliding = false;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void FixedUpdate()
+    {
+        if (isColliding)
+        {
+            rb.velocity = Vector2.zero;
+            isColliding = false;
+        }
+        else
+        {
+            // Limit the velocity if it exceeds the maximum
+            if (rb.velocity.magnitude > maxVelocity)
+            {
+                rb.velocity = rb.velocity.normalized * maxVelocity;
+            }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        isColliding = true;
     }
 
     private void Update()
