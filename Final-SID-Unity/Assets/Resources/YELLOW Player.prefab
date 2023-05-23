@@ -208,6 +208,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7be9b1443e7444db58bb99cefef9a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minX: 0.48
+  maxX: 8.47
+  minY: -4.53
+  maxY: 4.53
 --- !u!1 &9081604354836360917
 GameObject:
   m_ObjectHideFlags: 0

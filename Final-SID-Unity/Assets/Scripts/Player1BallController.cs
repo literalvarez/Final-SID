@@ -6,6 +6,8 @@ public class Player1BallController : MonoBehaviourPun, IPunObservable
     private Vector3 networkPosition;
     private Quaternion networkRotation;
     private Rigidbody2D rb;
+    [SerializeField] float minX, maxX;
+    [SerializeField] float minY, maxY;
 
     private void Awake()
     {
@@ -18,6 +20,28 @@ public class Player1BallController : MonoBehaviourPun, IPunObservable
         {
             // Mover la bola según la posición del mouse del jugador local
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            // Obtener la posición del mouse
+
+            // Restringir el rango de movimiento en el eje X
+            if (mousePosition.x < minX) // minX es el límite derecho del rango permitido
+            {
+                mousePosition.x = minX;
+            }
+            else if (mousePosition.x > maxX) // maxX es el límite izquierdo del rango permitido
+            {
+                mousePosition.x = maxX;
+            }
+
+            // Restringir el rango de movimiento en el eje Y
+            if (mousePosition.y < minY) // minY es el límite inferior del rango permitido
+            {
+                mousePosition.y = minY;
+            }
+            else if (mousePosition.y > maxY) // maxY es el límite superior del rango permitido
+            {
+                mousePosition.y = maxY;
+            }
+            // Mover la bola según la posición del mouse
             rb.MovePosition(mousePosition);
         }
         else
