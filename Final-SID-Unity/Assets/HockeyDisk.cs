@@ -57,17 +57,5 @@ public class HockeyDisk : MonoBehaviourPun, IPunObservable
         // Handle collision with players
         if (collision.gameObject.CompareTag("Player"))
         {
-            // Handle player collision logic here
-        }
-
-        // Synchronize the collision information across the network
-        photonView.RPC("SyncCollision", RpcTarget.Others, collision.gameObject.tag);
-    }
-
-    [PunRPC]
-    private void SyncCollision(string collidedTag)
-    {
-        // Handle collision logic on other clients
-        // You can access the collidedTag to determine the collision type and handle it accordingly
-    }
-}
+            PhotonView otherPhotonView = collision.gameObject.GetComponent<PhotonView>();
+            if
