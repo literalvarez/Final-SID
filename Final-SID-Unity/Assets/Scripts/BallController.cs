@@ -6,10 +6,30 @@ public class BallController : MonoBehaviourPun, IPunObservable
     private Vector3 networkPosition;
     private Quaternion networkRotation;
     private Rigidbody2D rb;
+    private SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void Start()
+    {
+        // Activar el renderizador de la bola para todos los jugadores
+        spriteRenderer.enabled = true;
+
+        if (photonView.IsMine)
+        {
+            // Habilitar la física en la bola del jugador local
+            rb.isKinematic = false;
+        }
+        else
+        {
+            // Desactivar el control y la física en la bola para los otros jugadores
+            rb.isKinematic = true;
+            rb.velocity = Vector2.zero;
+        }
     }
 
     private void Update()
