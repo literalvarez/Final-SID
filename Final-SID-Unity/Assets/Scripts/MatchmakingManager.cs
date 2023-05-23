@@ -10,6 +10,9 @@ public class MatchmakingManager : MonoBehaviourPunCallbacks
     private const int MaxPlayersPerRoom = 2; // Número máximo de jugadores por habitación
     private const string GameSceneName = "Juego"; // Reemplaza con el nombre de tu escena de juego
 
+    public static Player LocalPlayer { get; private set; }
+    public static Ownership OwnershipScript { get; private set; }
+
     public Button matchmakingButton; // Referencia al botón de matchmaking en la interfaz
 
     public UnityEvent DoStartMatchmaking;
@@ -88,5 +91,15 @@ public class MatchmakingManager : MonoBehaviourPunCallbacks
             Debug.Log("Habitación completa. Iniciar partida...");
             PhotonNetwork.LoadLevel(GameSceneName); // Cargar la escena de juego
         }
+
+        // Asignar el jugador local
+        LocalPlayer = PhotonNetwork.LocalPlayer;
+
+        // Obtener el objeto Ownership en la escena del juego
+        GameObject ownershipObject = GameObject.Find("OwnershipManager"); // Reemplaza "Ownership" con el nombre del objeto en la escena
+        OwnershipScript = ownershipObject.GetComponent<Ownership>();
+
+        // Asignar la propiedad de las bolas al jugador local
+        OwnershipScript.AssignOwnershipToBalls(LocalPlayer.ActorNumber);
     }
 }

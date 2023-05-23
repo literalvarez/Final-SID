@@ -9,6 +9,16 @@ public class PlayerController : MonoBehaviourPun
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        ownerID = photonView.Owner.ActorNumber; // Obtener el ID del jugador local
+
+        if (photonView.IsMine && photonView.Owner == MatchmakingManager.LocalPlayer)
+        {
+            if (MatchmakingManager.OwnershipScript != null)
+            {
+                MatchmakingManager.OwnershipScript.AssignOwnershipToBalls(ownerID);
+            }
+        }
     }
 
     private void Start()

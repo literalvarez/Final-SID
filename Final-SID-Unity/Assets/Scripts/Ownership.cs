@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,20 +11,25 @@ public class Ownership : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        if (photonView.IsMine)
+        {
+            if (photonView.Owner.GetPlayerNumber() == 1)
+            {
+                balls[0].GetPhotonView().TransferOwnership(photonView.Owner);
+            }
+            else if (photonView.Owner.GetPlayerNumber() == 2)
+            {
+                balls[1].GetPhotonView().TransferOwnership(photonView.Owner);
+            }
+        }
+    }
+
+    public void AssignOwnershipToBalls(int playerID)
+    {
         if (balls.Length >= 2)
         {
-            // Obtener los jugadores en la habitación
-            Player[] players = PhotonNetwork.PlayerList;
-            if (players.Length >= 2)
-            {
-                // Obtener los identificadores únicos de los jugadores
-                int player1ID = players[0].ActorNumber;
-                int player2ID = players[1].ActorNumber;
-
-                // Asignar el control de las bolas a los jugadores correspondientes
-                balls[0].GetPhotonView().TransferOwnership(player1ID); // Asignar al jugador 1
-                balls[1].GetPhotonView().TransferOwnership(player2ID); // Asignar al jugador 2
-            }
+            balls[0].GetPhotonView().TransferOwnership(playerID); // Asignar al jugador local
+            balls[1].GetPhotonView().TransferOwnership(playerID); // Asignar al jugador local
         }
     }
 }
