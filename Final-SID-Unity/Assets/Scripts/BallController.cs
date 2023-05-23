@@ -17,16 +17,8 @@ public class BallController : MonoBehaviourPun, IPunObservable
     {
         isLocalPlayer = photonView.IsMine;
 
-        if (isLocalPlayer)
-        {
-            // Activar el control para el jugador local
-            rb.bodyType = RigidbodyType2D.Dynamic;
-        }
-        else
-        {
-            // Desactivar el control para los otros jugadores
-            rb.bodyType = RigidbodyType2D.Static;
-        }
+        // Activar el control para ambos jugadores
+        rb.bodyType = RigidbodyType2D.Dynamic;
     }
 
     private void Update()
@@ -61,5 +53,4 @@ public class BallController : MonoBehaviourPun, IPunObservable
         }
     }
 }
-
 
