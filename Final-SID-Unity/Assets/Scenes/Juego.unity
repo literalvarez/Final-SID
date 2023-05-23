@@ -1311,6 +1311,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialDelay: 4
   timerText: {fileID: 1563619825}
+  whenTimerEnds:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1563619824}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1455552498
 Transform:
   m_ObjectHideFlags: 0
@@ -2147,17 +2162,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 9015191033726481108, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
+      propertyPath: m_SortingOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 9015191033726481110, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9015191034448277233, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 9015191034448277235, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015191034902134685, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
+      propertyPath: m_SortingOrder
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 9015191034902134687, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
       propertyPath: m_IsActive
@@ -2223,6 +2246,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9015191035011014879, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
+      propertyPath: m_TagString
+      value: Disk
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
 --- !u!4 &9015191034375328495 stripped
@@ -2242,8 +2269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15f61c38ae9a9f942924bc1aaffe9d23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minBoundary: {x: -30, y: -30}
-  maxBoundary: {x: 30, y: 30}
+  minBoundary: {x: -10, y: -4.6}
+  maxBoundary: {x: 10, y: 4.6}
 --- !u!114 &9015191034375328499
 MonoBehaviour:
   m_ObjectHideFlags: 0

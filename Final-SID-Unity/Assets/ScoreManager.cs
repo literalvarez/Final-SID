@@ -15,12 +15,12 @@ public class ScoreManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("YourTag")) // Replace "YourTag" with the tag you have assigned to the game object you want to detect
+        if (other.CompareTag("Disk")) // Replace "YourTag" with the tag you have assigned to the game object you want to detect
         {
             onTriggerEnterEvent.Invoke(); // Call the UnityEvent
 
             score++; // Increment the score by 1
-            scoreText.text = "Score: " + score.ToString(); // Update the score text
+            scoreText.text = /*"Score: " +*/ score.ToString(); // Update the score text
 
             objectToMove.position = new Vector3(targetPosition.position.x, targetPosition.position.y, objectToMove.position.z);
         }
