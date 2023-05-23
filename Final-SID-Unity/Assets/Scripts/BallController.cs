@@ -1,27 +1,15 @@
 using UnityEngine;
 using Photon.Pun;
 
-public class BallController : MonoBehaviourPun
+public class BallController : MonoBehaviourPun, IPunObservable
 {
+    private Vector3 networkPosition;
+    private Quaternion networkRotation;
     private Rigidbody2D rb;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-    }
-
-    private void Start()
-    {
-        if (photonView.IsMine)
-        {
-            // Solo ejecutar el código para el jugador local que instanció la bola
-            rb.isKinematic = false; // Habilitar la física en la bola del jugador local
-        }
-        else
-        {
-            // Desactivar el control de la bola para los otros jugadores
-            rb.isKinematic = true;
-        }
     }
 
     private void Update()
@@ -31,6 +19,28 @@ public class BallController : MonoBehaviourPun
             // Mover la bola según la posición del mouse del jugador local
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             rb.MovePosition(mousePosition);
+        }
+        else
+        {
+            // Sincronizar la posición y rotación de la bola con la información recibida de la red
+            transform.position = Vector3.Lerp(transform.position, networkPosition, Time.deltaTime * 10f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, Time.deltaTime * 10f);
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // Enviar la posición y rotación de la bola al resto de los jugadores
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else
+        {
+            // Recibir la posición y rotación de la bola desde el jugador propietario
+            networkPosition = (Vector3)stream.ReceiveNext();
+            networkRotation = (Quaternion)stream.ReceiveNext();
         }
     }
 }
