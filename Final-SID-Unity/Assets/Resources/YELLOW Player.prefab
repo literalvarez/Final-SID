@@ -212,6 +212,7 @@ MonoBehaviour:
   maxX: 7.94
   minY: -4.09
   maxY: 4.09
+  initialPositionPlayer2: {x: 4.86, y: 0.04, z: 0}
 --- !u!1 &9081604354836360917
 GameObject:
   m_ObjectHideFlags: 0

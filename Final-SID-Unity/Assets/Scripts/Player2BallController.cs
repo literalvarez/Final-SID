@@ -8,11 +8,15 @@ public class Player2BallController : MonoBehaviourPun, IPunObservable
     private Rigidbody2D rb;
     [SerializeField] float minX, maxX;
     [SerializeField] float minY, maxY;
+    [SerializeField] Vector3 initialPositionPlayer2;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
-
+    private void Start()
+    {
+        rb.position = initialPositionPlayer2;
+    }
     private void Update()
     {
         if (photonView.IsMine)
