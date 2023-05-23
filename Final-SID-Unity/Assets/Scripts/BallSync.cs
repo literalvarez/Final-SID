@@ -3,6 +3,8 @@ using Photon.Pun;
 
 public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
 {
+    public float maxVelocity = 5f; // Maximum velocity magnitude
+
     private Vector3 networkPosition;
     private Quaternion networkRotation;
     private Vector2 networkVelocity;
@@ -23,6 +25,12 @@ public class BallSync : MonoBehaviourPunCallbacks, IPunObservable
             Quaternion localRotation = transform.rotation;
             Vector2 localVelocity = rb.velocity;
             float localAngularVelocity = rb.angularVelocity;
+
+            // Limit the local velocity if it exceeds the maximum
+            if (localVelocity.magnitude > maxVelocity)
+            {
+                localVelocity = localVelocity.normalized * maxVelocity;
+            }
 
             // Actualizar la posición, rotación y velocidades de la bola
             photonView.RPC("UpdateBallTransform", RpcTarget.OthersBuffered, localPosition, localRotation, localVelocity, localAngularVelocity);
