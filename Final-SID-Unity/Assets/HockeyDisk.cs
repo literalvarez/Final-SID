@@ -15,6 +15,7 @@ public class HockeyDisk : MonoBehaviourPun, IPunObservable
 
         //if (!photonView.IsMine)
         //{
+
             rigidbody2D.isKinematic = true;
             GetComponent<CircleCollider2D>().enabled = true;
         //}
