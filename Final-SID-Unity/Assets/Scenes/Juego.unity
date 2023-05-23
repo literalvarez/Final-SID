@@ -1737,6 +1737,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxVelocity: 5
+  bounciness: 0.8
 --- !u!114 &1780773430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2232,12 +2233,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9015191035011014876, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
+      propertyPath: m_Mass
+      value: 0.47294796
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015191035011014876, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9015191035011014876, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
       propertyPath: m_AngularDrag
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015191035011014876, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
+      propertyPath: m_UseAutoMass
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015191035011014877, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
+      propertyPath: m_Radius
+      value: 2.04
       objectReference: {fileID: 0}
     - target: {fileID: 9015191035011014879, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
       propertyPath: m_Name
