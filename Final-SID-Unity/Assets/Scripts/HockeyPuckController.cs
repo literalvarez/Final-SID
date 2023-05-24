@@ -7,6 +7,8 @@ public class HockeyPuckController : MonoBehaviourPun, IPunObservable
     private Vector3 networkPosition;
     private Quaternion networkRotation;
 
+    [SerializeField] private float maxSpeed = 10f; // Magnitud máxima de la velocidad
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -53,6 +55,9 @@ public class HockeyPuckController : MonoBehaviourPun, IPunObservable
                 // Cambiar la dirección de la velocidad a la opuesta
                 rb.velocity = -rb.velocity;
             }
+
+            // Limitar la magnitud de la velocidad sin permitir que disminuya más allá de cierto valor
+            rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
         }
     }
 
@@ -80,6 +85,7 @@ public class HockeyPuckController : MonoBehaviourPun, IPunObservable
         }
     }
 }
+
 
 
 

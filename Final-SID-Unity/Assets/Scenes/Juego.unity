@@ -2243,6 +2243,10 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 2.04
       objectReference: {fileID: 0}
+    - target: {fileID: 9015191035011014877, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: a8cc009aaf48de249bcf0f3442ec8ec3, type: 2}
     - target: {fileID: 9015191035011014879, guid: 83e3032776059c94bb727e18b58f0d7e, type: 3}
       propertyPath: m_Name
       value: Disk
@@ -2329,3 +2333,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1163910132e713b4aaebf15f17f431a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxSpeed: 10
