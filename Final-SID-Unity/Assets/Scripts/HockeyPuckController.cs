@@ -19,8 +19,8 @@ public class HockeyPuckController : MonoBehaviourPun, IPunObservable
         if (!photonView.IsMine)
         {
             // Sincronizar la posición y rotación de la bola con la información recibida de la red
-            transform.position = Vector3.Lerp(transform.position, networkPosition, Time.deltaTime * 5f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, Time.deltaTime * 5f);
+            transform.position = Vector3.Lerp(transform.position, networkPosition, Time.deltaTime * 3f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, Time.deltaTime * 3f);
         }
     }
 

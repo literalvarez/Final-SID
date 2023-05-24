@@ -50,7 +50,7 @@ public class Player1BallController : MonoBehaviourPun, IPunObservable
         }
         else
         {
-            float interpolationFactor = 5f;
+            float interpolationFactor = 3f;
             // Sincronizar la posición y rotación de la bola con la información recibida de la red
             transform.position = Vector3.Lerp(transform.position, networkPosition, Time.deltaTime * interpolationFactor);
             transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, Time.deltaTime * interpolationFactor);
