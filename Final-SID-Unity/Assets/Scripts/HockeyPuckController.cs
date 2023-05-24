@@ -24,18 +24,35 @@ public class HockeyPuckController : MonoBehaviourPun, IPunObservable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (photonView.IsMine)
+        if (photonView.IsMine && (collision.gameObject.CompareTag("Ball1") || collision.gameObject.CompareTag("Ball2")))
         {
-            // Obtener la dirección opuesta a la actual de la bola
-            Vector2 currentDirection = rb.velocity.normalized;
-            Vector2 newDirection = -currentDirection;
+            // Obtener la dirección del choque
+            Vector2 impactDirection = collision.relativeVelocity.normalized;
 
-            // Aplicar una leve fuerza de empuje a la bola en la nueva dirección
-            float pushForce = 2f; // Ajusta la fuerza de empuje según tus necesidades
-            rb.AddForce(newDirection * pushForce, ForceMode2D.Impulse);
+            // Aplicar una fuerza de empuje a la bola en la dirección del choque
+            float pushForce = 4f; // Ajusta la fuerza de empuje según tus necesidades
+            rb.AddForce(impactDirection * pushForce, ForceMode2D.Impulse);
 
             // Sincronizar el movimiento de la bola con los demás jugadores
             photonView.RPC("SyncHockeyPuckMovement", RpcTarget.Others, transform.position, transform.rotation);
+        }
+        else
+        {
+            if (collision.gameObject.CompareTag("bordeV"))
+            {
+                // Cambiar la dirección de la velocidad en el eje Y
+                rb.velocity = new Vector2(rb.velocity.x, -rb.velocity.y);
+            }
+            else if (collision.gameObject.CompareTag("bordeH"))
+            {
+                // Cambiar la dirección de la velocidad en el eje X
+                rb.velocity = new Vector2(-rb.velocity.x, rb.velocity.y);
+            }
+            else
+            {
+                // Cambiar la dirección de la velocidad a la opuesta
+                rb.velocity = -rb.velocity;
+            }
         }
     }
 

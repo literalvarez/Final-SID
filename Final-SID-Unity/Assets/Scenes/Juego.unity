@@ -2054,6 +2054,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1147225250578325058, guid: 762ff01246ceefa459582a1be5797751, type: 3}
+      propertyPath: m_TagString
+      value: bordeV
+      objectReference: {fileID: 0}
     - target: {fileID: 5113909043637317549, guid: 762ff01246ceefa459582a1be5797751, type: 3}
       propertyPath: m_Name
       value: MESA
@@ -2125,6 +2129,22 @@ PrefabInstance:
     - target: {fileID: 5113909044123045480, guid: 762ff01246ceefa459582a1be5797751, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5113909044162080147, guid: 762ff01246ceefa459582a1be5797751, type: 3}
+      propertyPath: m_TagString
+      value: bordeH
+      objectReference: {fileID: 0}
+    - target: {fileID: 5113909044344937093, guid: 762ff01246ceefa459582a1be5797751, type: 3}
+      propertyPath: m_TagString
+      value: bordeV
+      objectReference: {fileID: 0}
+    - target: {fileID: 8247946128769477670, guid: 762ff01246ceefa459582a1be5797751, type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109054817188541183, guid: 762ff01246ceefa459582a1be5797751, type: 3}
+      propertyPath: m_TagString
+      value: bordeH
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 762ff01246ceefa459582a1be5797751, type: 3}
