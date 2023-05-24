@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class ScoreManager : MonoBehaviour
+public class ScoreManager : MonoBehaviourPunCallbacks, IPunObservable
 {
     public UnityEvent onTriggerEnterEvent; // UnityEvent to be called when the trigger is entered
     public TextMeshProUGUI scoreText; // Reference to the TextMeshProUGUI component for displaying the score
@@ -15,15 +17,41 @@ public class ScoreManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Disk")) // Replace "YourTag" with the tag you have assigned to the game object you want to detect
+        if (other.CompareTag("Ball3"))
         {
-            onTriggerEnterEvent.Invoke(); // Call the UnityEvent
+            if (photonView.IsMine)
+            {
+                photonView.RPC("IncrementScore", RpcTarget.All);
+                photonView.RPC("MoveObjectToTarget", RpcTarget.All, targetPosition.position);
+            }
+        }
+    }
 
-            score++; // Increment the score by 1
-            scoreText.text = /*"Score: " +*/ score.ToString(); // Update the score text
+    [PunRPC]
+    private void IncrementScore()
+    {
+        score++;
+        scoreText.text = score.ToString();
+    }
 
-            objectToMove.position = new Vector3(targetPosition.position.x, targetPosition.position.y, objectToMove.position.z);
+    [PunRPC]
+    private void MoveObjectToTarget(Vector3 targetPos)
+    {
+        objectToMove.position = new Vector3(targetPos.x, targetPos.y, objectToMove.position.z);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(score);
+        }
+        else
+        {
+            score = (int)stream.ReceiveNext();
+            scoreText.text = score.ToString();
         }
     }
 }
+
 
