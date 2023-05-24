@@ -16,7 +16,7 @@ public class HockeyPuckController : MonoBehaviourPun, IPunObservable
     {
         if (!photonView.IsMine)
         {
-            // Sincronizar la posición y rotación de la bola 3 con la información recibida de la red
+            // Sincronizar la posición y rotación de la bola con la información recibida de la red
             transform.position = Vector3.Lerp(transform.position, networkPosition, Time.deltaTime * 10f);
             transform.rotation = Quaternion.Lerp(transform.rotation, networkRotation, Time.deltaTime * 10f);
         }
@@ -24,16 +24,17 @@ public class HockeyPuckController : MonoBehaviourPun, IPunObservable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (photonView.IsMine && (collision.gameObject.CompareTag("Ball1") || collision.gameObject.CompareTag("Ball2")))
+        if (photonView.IsMine)
         {
-            // Obtener la dirección del choque
-            Vector2 impactDirection = collision.relativeVelocity.normalized;
+            // Obtener la dirección opuesta a la actual de la bola
+            Vector2 currentDirection = rb.velocity.normalized;
+            Vector2 newDirection = -currentDirection;
 
-            // Aplicar una fuerza de empuje a la bola 3 en la dirección del choque
-            float pushForce = 4f; // Ajusta la fuerza de empuje según tus necesidades
-            rb.AddForce(impactDirection * pushForce, ForceMode2D.Impulse);
+            // Aplicar una leve fuerza de empuje a la bola en la nueva dirección
+            float pushForce = 2f; // Ajusta la fuerza de empuje según tus necesidades
+            rb.AddForce(newDirection * pushForce, ForceMode2D.Impulse);
 
-            // Sincronizar el movimiento de la bola 3 con los demás jugadores
+            // Sincronizar el movimiento de la bola con los demás jugadores
             photonView.RPC("SyncHockeyPuckMovement", RpcTarget.Others, transform.position, transform.rotation);
         }
     }
@@ -41,7 +42,7 @@ public class HockeyPuckController : MonoBehaviourPun, IPunObservable
     [PunRPC]
     private void SyncHockeyPuckMovement(Vector3 newPosition, Quaternion newRotation)
     {
-        // Actualizar la posición y rotación de la bola 3 en la pantalla de los demás jugadores
+        // Actualizar la posición y rotación de la bola en la pantalla de los demás jugadores
         networkPosition = newPosition;
         networkRotation = newRotation;
     }
@@ -50,17 +51,18 @@ public class HockeyPuckController : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            // Enviar la posición y rotación de la bola 3 al resto de los jugadores
+            // Enviar la posición y rotación de la bola al resto de los jugadores
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
         }
         else
         {
-            // Recibir la posición y rotación de la bola 3 desde el jugador propietario
+            // Recibir la posición y rotación de la bola desde el jugador propietario
             networkPosition = (Vector3)stream.ReceiveNext();
             networkRotation = (Quaternion)stream.ReceiveNext();
         }
     }
 }
+
 
 
